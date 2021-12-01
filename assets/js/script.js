@@ -1,9 +1,17 @@
 // display current day at top of page
-$('#currentDay').html(moment().format("dddd, MMMM DD, YYYY"));
+$("#currentDay").html(moment().format("dddd, MMMM DD, YYYY"));
 
     // add time blocks to planner with times from 8am to 5pm 
-function addTimeBlockss() {
-
+function addTimeBlocks() {
+    for (var i = 8; i <= 17; i++) {
+        // format time for each section
+        var time = moment(i, "HH").format("h A");
+        $(".container").append(`<section class='row time-block'>${time}</section>`);
+        $(".container").append(`<div class='col col-md-1 ${i}'></div>`);
+        $(".container").append("<textarea class='col col-md-10 description'></textarea>");        
+        $(".container").append(`<button class='col col-md-1 btn saveBtn' id='${i}'></button>`);        
+        $(`#${i}`).append("<i class='row time-block;'></i>");
+    }
 }
 
 // retrieve saved items if they exist; otherwise create empty array
@@ -27,15 +35,11 @@ function saveTask() {
     localStorage.setItem("planner-tasks", JSON.stringify(plannerTasks));
 };
 
+addTimeBlocks();
+
 // $(this.click(function () {
 //     alert($(this).attr('setid'));
 // }))
 
 // // Event Handlers
 // $(".fa-save").click(saveTask);
-
-
-// planner-tasks
-// ["time", "task"]
-// ["9": "do something here"]
-// ["13": "another item"]
