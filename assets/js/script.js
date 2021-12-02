@@ -1,8 +1,11 @@
+// display current day at top of page
+function setCurrentDate() {
+    $("#currentDay").html(moment().format("dddd, MMMM DD, YYYY"));
+}
+
 // add time blocks to planner with times from 8am to 5pm 
 function addElements() {
-    // display current day at top of page
     var today = moment();
-    $("#currentDay").html(today.format("dddd, MMMM DD, YYYY"));
 
     for (var i = 8; i <= 17; i++) {
         // format time for each section
@@ -12,7 +15,6 @@ function addElements() {
         $(`#row${i}`).append(`<div class='col col-md-1 hour${i}'>${time}</div>`);
 
         // add textarea element with styling class based on time of day
-        console.log(i < today.format("HH"));
         if (i > today.format("HH")) {
             $(`#row${i}`).append("<textarea class='col col-md-10 description future' ></textarea>");  
         } else if (i == today.format("HH")) {
@@ -26,13 +28,22 @@ function addElements() {
     }
 }
 
+// configure page
+function pageInit() {
+    setCurrentDate();
+    addElements();
+    loadTasks();
+}
+
 // retrieve saved items if they exist; otherwise create empty array
 function loadTasks() {
     var plannerTasks = JSON.parse(localStorage.getItem("planner-tasks")) || [];
     // add to planner
-    for (task in plannerTasks) {
-        // TODO: add to correct time
-        console.log(task);
+    for (task of plannerTasks) {
+
+        // var textArea = $(`#row${hour}`).children("textarea");
+        // textArea.val(task.task);
+        $(`#row${task.hour}`).children("textarea").val(task.task);
     }
 }
 
@@ -40,16 +51,16 @@ function loadTasks() {
 $(".container").on("click", "button", function() {
 // retrieve saved items if they exist; otherwise create empty array
 var plannerTasks = JSON.parse(localStorage.getItem("planner-tasks")) || [];
-var hourID = `hour${this.id}`
-// var task = $(`#${hourID}`).text()
 
-console.log($(`#${hourID}`).html());
-var newTask = [this.id, $(".hourID").text()]; //TODO fix this
+var newTask = {
+    hour: this.id, 
+    task: $(`#row${this.id}`).children("textarea").val()
+};
+
 plannerTasks.push(newTask);
 // convert to string and store in localStorage
 localStorage.setItem("planner-tasks", JSON.stringify(plannerTasks));
-console.log(newTask);
-})
+});
 
-// add time blocks to page
-addElements();
+// configure page
+pageInit();
