@@ -8,20 +8,20 @@ function addElements() {
         // format time for each section
         var time = moment(i, "HH").format("h A");
         // append elements
-        $(".container").append(`<section class='row time-block'>${time}</section>`);
-        $(".container").append(`<div class='col col-md-1 hour${i}'></div>`);
+        $(".container").append(`<section class='row time-block' id='row${i}'></section>`);
+        $(`#row${i}`).append(`<div class='col col-md-1 hour${i}'>${time}</div>`);
 
-        // style styling class based on time of day
+        // add textarea element with styling class based on time of day
         console.log(i < today.format("HH"));
         if (i > today.format("HH")) {
-            $(".container").append("<textarea class='col col-md-10 description future' ></textarea>");  
+            $(`#row${i}`).append("<textarea class='col col-md-10 description future' ></textarea>");  
         } else if (i == today.format("HH")) {
-            $(".container").append("<textarea class='col col-md-10 description present'></textarea>");  
+            $(`#row${i}`).append("<textarea class='col col-md-10 description present'></textarea>");  
         } else {
-            $(".container").append("<textarea class='col col-md-10 description past'></textarea>");  
+            $(`#row${i}`).append("<textarea class='col col-md-10 description past'></textarea>");  
         }
       
-        $(".container").append(`<button class='col col-md-1 btn saveBtn' id='${i}'></button>`);        
+        $(`#row${i}`).append(`<button class='col col-md-1 btn saveBtn' id='${i}'></button>`);        
         $(`#${i}`).append("<i class='fas fa-save'></i>");
     }
 }
